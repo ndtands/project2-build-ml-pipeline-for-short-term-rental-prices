@@ -1,5 +1,6 @@
 # Build an ML Pipeline for Short-Term Rental Prices in NYC
 ## Project Description
+You're employed by a property management firm that rents out rooms and real estate for brief durations on multiple platforms. It's essential to determine the standard rate for a specific property by comparing it to the rates of comparable properties. New data is acquired in large volumes weekly. Consequently, there's a requirement to refresh the model at the same frequency, demanding a comprehensive process that can be applied repeatedly.
 
 ```
 tree .
@@ -188,4 +189,64 @@ mlflow run . -P steps=test_regression_model
 2023-10-19 16:01:33,711 Scoring
 2023-10-19 16:01:33,815 Score: 0.5667662213851652
 2023-10-19 16:01:33,815 MAE: 33.15299473822678
+```
+
+#### 6.10. Test model with new dataset
+```
+mlflow run https://github.com/ndtands/project2-build-ml-pipeline-for-short-term-rental-prices.git -v v1.0.1 -P hydra_options="etl.sample='sample2.csv'"
+
+2023-10-19 22:48:15,630 Returning sample sample2.csv
+2023-10-19 22:48:15,630 Uploading sample.csv to Weights & Biases
+....
+2023-10-19 22:58:12,194 Dropping duplicates
+2023-10-19 22:58:12,236 Dropping outliers
+2023-10-19 22:58:12,236 Number rows before dropping outliers: 48895
+2023-10-19 22:58:12,254 Number rows after dropping outliers: 46427
+2023-10-19 22:58:12,254 Converting last_review to datetime
+2023-10-19 22:58:12,260 Saving cleaned dataframe to csv
+2023-10-19 22:58:12,444 Logging artifact
+....
+test_data.py::test_column_names PASSED                                                                                           [ 16%]
+test_data.py::test_neighborhood_names PASSED                                                                                     [ 33%]
+test_data.py::test_proper_boundaries PASSED                                                                                      [ 50%]
+test_data.py::test_similar_neigh_distrib PASSED                                                                                  [ 66%]
+test_data.py::test_price_range PASSED                                                                                            [ 83%]
+test_data.py::test_row_count PASSED                                                                                              [100%]
+....
+2023-10-19 23:00:17,252 Fetching artifact clean_sample.csv:latest
+2023-10-19 23:00:30,539 Splitting trainval and test
+2023-10-19 23:00:30,572 Uploading trainval_data.csv dataset
+2023-10-19 23:01:16,214 Uploading test_data.csv dataset
+....
+2023-10-19 23:02:14,743 Minimum price: 10, Maximum price: 350
+2023-10-19 23:02:14,766 Preparing sklearn pipeline
+2023-10-19 23:02:14,766 Fitting
+2023-10-19 23:04:13,050 Scoring
+2023-10-19 23:04:13,213 Score: 0.5728574312047999
+2023-10-19 23:04:13,213 MAE: 31.550786781531833
+2023-10-19 23:04:13,213 Exporting model
+.....
+
+
+
+```
+
+### Wandb project
+```
+https://wandb.ai/ndtan-fpt/nyc_airbnb?workspace=user-ndtan-fpt
+```
+
+## Code Quality
+### Style Guide
+Format your refactored code using the PEP 8 – Style Guide.
+To help meet the PEP 8 guidelines, you can use autopep8 with the following command line commands:
+```
+autopep8 --in-place --aggressive --aggressive .
+```
+
+### Style Checking and Error Spotting
+Utilize Pylint for code analysis to spot programming errors and areas that might benefit from further refactoring. Check the pylint score using the command below:
+
+```
+pylint -rn -sn .
 ```
